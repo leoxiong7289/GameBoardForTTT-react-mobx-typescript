@@ -1,26 +1,35 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { observer, inject } from 'mobx-react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Index from './pages';
+import Players from './pages/players';
+import Board from './pages/board';
+import result from './pages/result';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+interface RootProps {
+}
+@inject()
+@observer
+class App extends React.Component<RootProps> {
+
+  constructor(props:any){
+    super(props)
+  }
+
+  render() {
+    return (
+      <Router>
+        <Route path='/board/' exact component={Board} />
+        <Route path='/result/' exact component={result} />
+        <Route path='/players/' exact component={Players} />
+        <Route path='/index/' exact component={Index} />
+        <Route path='/' exact component={Index} />
+      </Router>
+    );
+  }
 }
 
 export default App;
