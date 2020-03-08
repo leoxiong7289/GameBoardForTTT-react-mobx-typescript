@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Avatar, Button } from 'antd';
-import { buildChildren } from '@babel/types';
+import { observer } from 'mobx-react';
 
 // Define a styled Container to wrap the avatar and the name elements
 const PlayerAvatarCard = styled.div`
@@ -30,26 +30,49 @@ const PlayerAvatarCard = styled.div`
 
   .avatar-button {
     position: absolute;
-    top:12vh;
+    top: 12vh;
   }
 `;
 
-interface PlayerAvatar {
-  name: string,
-  hasButton: boolean,
-  buttonName: any,
-  buttonFunction:any,
+interface RootProps {
+  name: string;
+  hasButton: boolean;
+  isButtonDisabled?: boolean;
+  buttonName?: any;
+  buttonType?: any;
+  buttonFunction?: any;
 }
 
-export default function ImageAvatars(props: PlayerAvatar) {
+// interface RootState {
+//   isAddButtonDisabled?: boolean,
+// }
+@observer
+export default class ImageAvatars extends React.Component<RootProps> {
+  // constructor(props:RootProps) {
+  //   super(props)
+    // this.state={
+    //   isAddButtonDisabled: this.props.isButtonDisabled
+    // }
+  // }
+
+  render(){
   return (
     <div>
-    <PlayerAvatarCard>
-      <Avatar className="avatar" alt={props.name} src={`/static/images/avatar/${props.name}.jpg`} size={64} />
-      {/* <Avatar size='small' src={`https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} /> */}
-      <span className="avatar-name">{props.name}</span>
-    </PlayerAvatarCard>
-      {props.hasButton && <Button className='avatar-button' type='default' onClick={props.buttonFunction}>{props.buttonName}</Button>}
+      <PlayerAvatarCard>
+        <Avatar className="avatar" alt={this.props.name} src={`/static/images/avatar/${this.props.name}.jpg`} size={64} />
+        {/* <Avatar size='small' src={`https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} /> */}
+        <span className="avatar-name">{this.props.name}</span>
+      </PlayerAvatarCard>
+      {this.props.hasButton && (
+        <Button
+          className="avatar-button"
+          type={this.props.buttonType}
+          disabled={this.props.isButtonDisabled}
+          onClick={this.props.buttonFunction}
+        >
+          {this.props.buttonName}
+        </Button>
+      )}
     </div>
-  );
+  );}
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { Formik, ErrorMessage } from 'formik';
+import { Form, Input, Select, SubmitButton } from 'formik-antd';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styled from 'styled-components';
@@ -12,46 +13,74 @@ const ContentDiv = styled.div`
 `;
 
 interface RootProps {
-  competitionStore?: any
+  competitionStore?: any;
+}
+
+interface Errors {
+  name?: any
 }
 
 @inject('competitionStore')
 @observer
 class Index extends React.Component<RootProps> {
-  constructor(props: any) {
-    super(props);
-    // console.log(this.props);
+  // constructor(props: any) {
+  //   super(props);
+  //   console.log(this.props);
+  // }
+
+  componentWillMount() {
+    document.title = 'Welcome to Tornado Tennis Club'
+    // history.go(0)
   }
 
   render() {
-    const { competition } = this.props.competitionStore;
+    const { competition } = this.props.competitionStore
     return (
       <div>
         <Header />
         <ContentDiv className="content-div">
-          {/* {console.log(this.props.competitionStore.changeName('123'))} */}
           <Row>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <div style={{ backgroundColor: '#ccc', width: '100vh', height: '10vh', margin: '0 auto' }}>
-                {/* TODO: with Formik to replace */}
-                {/* TODO: separate UI from Logic */}
-                <label htmlFor="game-name">GAME NAME</label>
-                <input type="text" name="game-name"></input>
-                <label htmlFor="game-mode">GAME MODE</label>
-                <select value="3" name="game-mode">
-                  <option value="3">2 out of 3</option>
-                  <option value="5">3 out of 5</option>
-                  <option value="7">4 out of 7</option>
-                </select>
-                <label htmlFor="game-style">GAME STYLE</label>
-                <select value="single" name="game-style">
-                  <option value="single">Single Circle</option>
-                  <option value="double">Double Circle</option>
-                </select>
+              <div style={{ backgroundColor: '#ccc', width: '100vh', height: '16vh', margin: '0 auto' }}>
+                <Formik
+                  initialValues={{ name: '', style: competition.style }}
+                  validate={(value)=>{
+                    const errors:Errors={}
+                    if(value.name===''){
+                      errors.name = "Please input a name to create competition first"
+                    }
+                    return errors
+                  }}
+                  onSubmit={(value, action) => {
+                    // const { competition } = this.props.competitionStore;
+                    const { storeCompetitionInStore } = this.props.competitionStore;
+                    let tempCompetition = {
+                      name: value.name,
+                      style: value.style
+                    };
+                    storeCompetitionInStore(tempCompetition);
+                    // console.log(storeCompetitionInStore)
+                    setTimeout(() => {
+                      action.setSubmitting(false);
+                      // console.log(value.name)
+                      alert(`Competition ${value.name} has created successfully!`);
+                    }, 500); 
+                  }}
+                >
+                  <Form>
+                    <label htmlFor="name">COMPETITION NAME </label>
+                    <Input name="name" placeholder="Please input a competition name" onChange={(e)=>e.target.value} />
+                    <ErrorMessage name='name' component="div" />
+                    <label htmlFor="style">COMPETITION STYLE </label>
+                    <Select defaultValue="single" name="style" onChange={() => {}}>
+                      <Select.Option value="single">Single Circle</Select.Option>
+                      <Select.Option value="double">Double Circle</Select.Option>
+                    </Select>
+                    <SubmitButton type="primary" >Click To Create A Competition</SubmitButton>
+                  </Form>
+                </Formik>
                 <Link to="/players/">
-                  <a>
-                    <Button type="primary">Confirm and Go</Button>
-                  </a>
+                  <Button type="danger" disabled={!competition.name}>Go</Button>
                 </Link>
               </div>
             </Col>

@@ -16,15 +16,17 @@ const ContentDiv = styled.div`
 `;
 interface RootProps {
   playersStore?: any;
+  competitionStore?: any;
 }
 
 interface RootState {
   groups?: any;
   displayedGroup?: any;
   allPlayers?: any;
+  initialIsAddButtonDisabledGroup?: any;
 }
 
-@inject('playersStore')
+@inject('playersStore','competitionStore')
 @observer
 class Players extends React.Component<RootProps, RootState> {
   constructor(props: any) {
@@ -33,13 +35,14 @@ class Players extends React.Component<RootProps, RootState> {
     this.state = {
       groups: [],
       displayedGroup: [],
-      allPlayers: []
+      allPlayers: [],
+      initialIsAddButtonDisabledGroup: [],
     };
-    this.handleClick = this.handleClick.bind(this)
+    this.handleGroupSelectedClick = this.handleGroupSelectedClick.bind(this)
     this.filterPlayersByGroup = this.filterPlayersByGroup.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get(
         'https://cdn.contentful.com/spaces/17oqlsgq9laf/environments/master/entries?access_token=jyXkHPkW7z0fbBiWFDJckuq0w6U1tMHO7wQI7cFxyzg'
@@ -51,31 +54,33 @@ class Players extends React.Component<RootProps, RootState> {
         }));
         // console.log(allPlayers);
         let groups = Array.from(new Set(allPlayers.map((item: any) => item.group))).sort();
-        // console.log(groups);
-        this.setState({ allPlayers, groups });
+        let initialIsAddButtonDisabledGroup = allPlayers.map((item:any)=>{return {'name':item.name,'isButtonDisabled':false}})
+        // console.log(isAddButtonDisabledGroup);
+        this.setState({ allPlayers, groups, initialIsAddButtonDisabledGroup });
+        const { createAllPlayersCardAddButtonStatus } = this.props.playersStore
+        const { avatarAddButtonStatusGroup } = this.props.playersStore
+        if (avatarAddButtonStatusGroup.length==0) {
+        createAllPlayersCardAddButtonStatus(this.state.initialIsAddButtonDisabledGroup)
+        }
+        // console.log(avatarAddButtonStatusGroup)
+        document.title = this.props.competitionStore.competition.name
       });
   }
 
-  handleClick(checkedValues: any): void {
+  handleGroupSelectedClick(checkedValues: any): void {
     this.setState({
       displayedGroup: checkedValues
     });
-    // console.log(this.state.displayedGroup)
   }
 
   filterPlayersByGroup(allPlayers:any,groupName:any):any{
-    let playersListByGroup = allPlayers.filter((player:any)=>player.group==groupName)
-    // console.log(playersListByGroup)
-    return playersListByGroup
+    return allPlayers.filter((player:any)=>player.group==groupName)
   }
 
   render() {
     const { players } = this.props.playersStore;
     const playersList = players.slice().map((item: any) => item.name);
-    const allPlayers = this.state.allPlayers
-    console.log(players)
-    // console.log(allPlayers.filter((player:any)=>player.group=='A'? player.name:null));
-    // console.log(allPlayers)
+    const allPlayers = this.state.allPlayers;
     return (
       <div>
         <div className="header-div">
@@ -84,7 +89,7 @@ class Players extends React.Component<RootProps, RootState> {
         <ContentDiv>
           <div className="group-select">
             <h3 className="selectgroups">Please Select Groups</h3>
-            <Checkbox.Group options={this.state.groups} onChange={this.handleClick} />
+            <Checkbox.Group options={this.state.groups} onChange={this.handleGroupSelectedClick} />
           </div>
           {this.state.displayedGroup.map((groupName: any, index: any) => {
             return (
@@ -96,7 +101,7 @@ class Players extends React.Component<RootProps, RootState> {
               </div>
             );
           })}
-          {players.length > 0 ? <PlayersList playersList={playersList} /> : <>{players}</>}
+          {players.length > 0 ? <PlayersList playersList={playersList} /> : <></>}
           <Link to="/board/">
             <Button type="danger">BEGIN</Button>
           </Link>

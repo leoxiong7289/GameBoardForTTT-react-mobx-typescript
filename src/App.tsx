@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { observer, inject } from 'mobx-react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -14,10 +13,9 @@ interface RootProps {
 @inject()
 @observer
 class App extends React.Component<RootProps> {
-
-  constructor(props:any){
-    super(props)
-  }
+  // constructor(props:any){
+  //   super(props)
+  // }
 
   render() {
     return (

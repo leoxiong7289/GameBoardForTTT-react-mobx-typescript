@@ -1,14 +1,14 @@
 import competitionStore from './competition';
 import gamesStore from './games';
 import playersStore from './players';
-// import uiStore from './UIStore'
+import uiStore from './uiStore';
 
 
 const stores = {
   competitionStore,
   gamesStore,
   playersStore,
-  // uiStore,
+  uiStore,
 }
 
 export default stores;

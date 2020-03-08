@@ -4,7 +4,7 @@ import ImageAvatar from './avatar';
 interface player {
   name: string;
   score: number;
-  result: number;
+  rank: number;
 }
 
 export default (props: any) => {
@@ -18,7 +18,7 @@ export default (props: any) => {
                 <ImageAvatar name={player.name} hasButton={false} buttonName='' buttonFunction='' />
               </td>
               <td style={{ border: '1px solid #000' }}>{player.score}</td>
-              <td style={{ border: '1px solid #000' }}>{`第${player.result}名`}</td>
+              <td style={{ border: '1px solid #000' }}>{`第${player.rank}名`}</td>
             </tr>
           );
         })}

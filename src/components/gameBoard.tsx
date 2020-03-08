@@ -1,63 +1,124 @@
 import * as React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import ImageAvatar from './avatar';
+import { observer, inject } from 'mobx-react';
+
+import { Form, Select, SubmitButton, ResetButton } from 'formik-antd';
+import { Formik } from 'formik';
 
 interface game {
   gameID: number;
-  p1: string;
-  s1: number;
-  p2: string;
-  s2: number;
+  player1: string;
+  score1: number;
+  player2: string;
+  score2: number;
 }
 
-export default (props: any) => {
+interface RootProps {
+  game?: any;
+  gamesStore?: any;
+}
 
-  const [submitState, setSubmitState] = React.useState(false)
-  
-
-  const changeState=()=> {
-    setSubmitState(!submitState)
+interface RootState {
+  submitState?: boolean;
+}
+@inject('gamesStore', 'playersStore')
+@observer
+export default class GameBoard extends React.Component<RootProps, RootState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      submitState: false
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
-  
-  return (
-    <div className="board-card">
-      
+
+  handleSubmit() {
+    this.setState({ submitState: !this.state.submitState });
+    // const { gameBoards } = this.props.gamesStore;
+    // const game = gameBoards[0];
+  }
+
+  handleReset() {
+    this.setState({ submitState: !this.state.submitState });
+    // const { gameBoards } = this.props.gamesStore;
+    // const game = gameBoards;
+  }
+
+  render() {
+    const { game } = this.props;
+    const { handleSubmitScore } = this.props.gamesStore;
+    const { handleResetScore } = this.props.gamesStore;
+    // console.log(game.player1)
+    return (
+      <div className="board-card">
+        {/* TODO: add formik into  */}
+        <Formik
+          initialValues={{ score1: 0, score2: 0 }}
+          onSubmit={(value: any, action: any) => {
+            let gameScore = {
+              gameID: game.gameID,
+              player1: game.player1,
+              score1: value.score1,
+              score2: value.score2,
+              player2: game.player2
+            };
+            // console.log(gameScore)
+            handleSubmitScore(gameScore);
+            this.setState({ submitState: !this.state.submitState });
+            setTimeout(() => {
+              action.setSubmitting(false);
+            }, 500);
+          }}
+          onReset={() => {
+            handleResetScore(game.gameID);
+            this.setState({ submitState: !this.state.submitState });
+          }}
+        >
+          <Form>
             <Row>
               <Col lg={4}>
-                <ImageAvatar name={props.game.p1} hasButton={false} buttonName='' buttonFunction='' />
+                <ImageAvatar name={game.player1} hasButton={false} />
               </Col>
               <Col lg={4}>
-                <input type="number" />
+                <Select name="score1">
+                  <Select.Option value="0">0</Select.Option>
+                  <Select.Option value="1">1</Select.Option>
+                  <Select.Option value="2">2</Select.Option>
+                  <Select.Option value="3">3</Select.Option>
+                  <Select.Option value="4">4</Select.Option>
+                </Select>
               </Col>
-              <Col lg={4}>{`第 ${props.game.gameID} 场`}</Col>
+              <Col lg={4}>{`第 ${game.gameID} 场`}</Col>
               <Col lg={4}>
-                <input type="number" />
+                <Select name="score2">
+                  <Select.Option value="0">0</Select.Option>
+                  <Select.Option value="1">1</Select.Option>
+                  <Select.Option value="2">2</Select.Option>
+                  <Select.Option value="3">3</Select.Option>
+                  <Select.Option value="4">4</Select.Option>
+                </Select>
               </Col>
               <Col lg={4}>
-                <ImageAvatar name={props.game.p2} hasButton={false} buttonName='' buttonFunction='' />
+                <ImageAvatar name={game.player2} hasButton={false} />
               </Col>
             </Row>
             <Row>
-              <Col lg={4}>
-                <Button
-                  id={`submit-${props.game.gameID}`}
-                  type="primary"
-                  onClick={()=>setSubmitState(!submitState)}
-                  disabled={submitState}
-                >
-                  SUBMIT
-                </Button>
+              <Col lg={8}>
+                <SubmitButton disabled={this.state.submitState} type="primary">
+                  Submit
+                </SubmitButton>
               </Col>
-              <Col lg={4}>
-                <Button
-                  type="danger"
-                  onClick={()=>setSubmitState(!submitState)}
-                  disabled={!submitState}
-                >
-                  RESET
-                </Button>
+              <Col lg={8}>
+                <ResetButton disabled={!this.state.submitState} type="danger">
+                  Reset
+                </ResetButton>
               </Col>
             </Row>
-    </div>
-  );
-};
+          </Form>
+        </Formik>
+      </div>
+    );
+  }
+}

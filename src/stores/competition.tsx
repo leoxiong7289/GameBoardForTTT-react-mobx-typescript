@@ -1,13 +1,22 @@
-import { observable, computed, action } from 'mobx';
+import { observable, action } from 'mobx';
 
 class CompetitionClass {
   @observable competition = {
-    name: 'Leo',
-    mode: '3',
-    style: 'single',
+    name: '',
+    style: '',
   };
 
-  
+  @action.bound 
+  storeCompetitionInStore(competition:any) {
+    this.competition = competition
+    console.log('competition name in store: '+this.competition.name)
+  }
+
+  @action.bound
+  resetCompetitionStore() {
+    this.competition.name = ''
+    // console.log(this.competition)
+  }
 }
 
 const competitionStore = new CompetitionClass();
