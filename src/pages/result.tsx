@@ -8,6 +8,11 @@ import ShowResult from '../components/showResult';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
+const ContainerDiv = styled.div`
+  margin: 0 auto;
+  width: 80%;
+  background-color: #ccc;
+`
 interface RootProps {
   playersStore: any;
   gamesStore: any;
@@ -85,11 +90,13 @@ export default class Result extends React.Component<RootProps> {
         <div className="header-div">
           <Header />
         </div>
+        <ContainerDiv>
         <h2>Competition Result</h2>
         <ShowResult playersList={playersList} />
         <Link to="/index/">
-          <Button type="danger">RESTART</Button>
+          <Button type="danger">Restart New Competition</Button>
         </Link>
+        </ContainerDiv>
         <div className="footer-div">
           <Footer />
         </div>

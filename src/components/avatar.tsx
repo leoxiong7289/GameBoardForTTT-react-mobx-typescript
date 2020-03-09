@@ -5,10 +5,11 @@ import { observer } from 'mobx-react';
 
 // Define a styled Container to wrap the avatar and the name elements
 const PlayerAvatarCard = styled.div`
-  width: 10vh;
-  height: 18vh;
+  width: 15vh;
+  height: 20vh;
   position: relative;
   border-radius: 2vh;
+  margin: 0 auto;
 
   &:hover {
     content: '';
@@ -17,20 +18,22 @@ const PlayerAvatarCard = styled.div`
 
   .avatar {
     position: absolute;
+    
     top: 1vh;
-    left: 1.1vh;
+    left: 3.5vh;
   }
 
   .avatar-name {
     position: absolute;
-    font-size: 3vh;
+    font-size: 2vh;
     top: 10vh;
-    left: 2.4vh;
+    left: 2.5vh;
   }
 
   .avatar-button {
     position: absolute;
-    top: 12vh;
+    top: 16vh;
+    left:3.5vh;
   }
 `;
 
@@ -62,7 +65,6 @@ export default class ImageAvatars extends React.Component<RootProps> {
         <Avatar className="avatar" alt={this.props.name} src={`/static/images/avatar/${this.props.name}.jpg`} size={64} />
         {/* <Avatar size='small' src={`https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} /> */}
         <span className="avatar-name">{this.props.name}</span>
-      </PlayerAvatarCard>
       {this.props.hasButton && (
         <Button
           className="avatar-button"
@@ -73,6 +75,7 @@ export default class ImageAvatars extends React.Component<RootProps> {
           {this.props.buttonName}
         </Button>
       )}
+      </PlayerAvatarCard>
     </div>
   );}
 }

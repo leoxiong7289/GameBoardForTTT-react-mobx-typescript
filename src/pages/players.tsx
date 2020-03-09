@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Button, Checkbox } from 'antd';
+import { Row, Col, Button, Checkbox } from 'antd';
 import styled from 'styled-components';
 
 import PlayersByGroup from '../components/playersByGroup';
@@ -12,6 +12,8 @@ import { observer, inject } from 'mobx-react';
 
 const ContentDiv = styled.div`
   margin: 0 auto;
+  padding-left: 6vh;
+  width: 80%;
   background-color: #ccc;
 `;
 interface RootProps {
@@ -87,10 +89,16 @@ class Players extends React.Component<RootProps, RootState> {
           <Header />
         </div>
         <ContentDiv>
+          <Row>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <div className="group-select">
             <h3 className="selectgroups">Please Select Groups</h3>
             <Checkbox.Group options={this.state.groups} onChange={this.handleGroupSelectedClick} />
           </div>
+          </Col>
+          </Row>
+          <Row>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           {this.state.displayedGroup.map((groupName: any, index: any) => {
             return (
               <div className={`${groupName}PlayersList`} key={groupName + index}>
@@ -101,10 +109,20 @@ class Players extends React.Component<RootProps, RootState> {
               </div>
             );
           })}
+          </Col>
+          </Row>
+          <Row>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           {players.length > 0 ? <PlayersList playersList={playersList} /> : <></>}
+          </Col>
+          </Row>
+          <Row>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Link to="/board/">
-            <Button type="danger">BEGIN</Button>
+            <Button type="danger" >Begin Competition</Button>
           </Link>
+          </Col>
+          </Row>
         </ContentDiv>
         <div className="footer-div">
           <Footer />

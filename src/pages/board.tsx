@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { observer, inject } from 'mobx-react';
@@ -8,6 +8,12 @@ import GameBoard from '../components/gameBoard';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import GenarateGameBoards from '../components/genarateGameBoards';
+
+const ContainerDiv = styled.div`
+  margin: 0 auto;
+  background-color: #ccc;
+  width: 80%;
+`
 
 interface RootProps {
   gamesStore?: any;
@@ -45,8 +51,10 @@ export default class CompetitionBoard extends React.Component<RootProps> {
         <div className="header-div">
           <Header />
         </div>
-        <div>
+        <ContainerDiv>
           <h2>Competition Board</h2>
+          <Row>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           {gameBoards.map((game: any, index: number) => {
             return (
               <div key={index}>
@@ -54,10 +62,12 @@ export default class CompetitionBoard extends React.Component<RootProps> {
               </div>
             );
           })}
+            </Col>
+          </Row>
           <Link to="/result/">
-            <Button type="danger">RESULT</Button>
+            <Button type="danger">Get Result</Button>
           </Link>
-        </div>
+        </ContainerDiv>
         <div className="footer-div">
           <Footer />
         </div>

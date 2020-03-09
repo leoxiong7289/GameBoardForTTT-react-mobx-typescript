@@ -2,9 +2,16 @@ import * as React from 'react';
 import { Row, Col } from 'antd';
 import ImageAvatar from './avatar';
 import { observer, inject } from 'mobx-react';
-
+import styled from 'styled-components';
 import { Form, Select, SubmitButton, ResetButton } from 'formik-antd';
 import { Formik } from 'formik';
+
+
+const ContainerDiv = styled.div`
+  margin: 0 auto;
+  width: 700px;
+`
+
 
 interface game {
   gameID: number;
@@ -52,8 +59,8 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
     const { handleResetScore } = this.props.gamesStore;
     // console.log(game.player1)
     return (
-      <div className="board-card">
-        {/* TODO: add formik into  */}
+      <ContainerDiv className="board-card">
+        <hr/>
         <Formik
           initialValues={{ score1: 0, score2: 0 }}
           onSubmit={(value: any, action: any) => {
@@ -78,10 +85,10 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
         >
           <Form>
             <Row>
-              <Col lg={4}>
+              <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                 <ImageAvatar name={game.player1} hasButton={false} />
               </Col>
-              <Col lg={4}>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                 <Select name="score1">
                   <Select.Option value="0">0</Select.Option>
                   <Select.Option value="1">1</Select.Option>
@@ -90,8 +97,8 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
                   <Select.Option value="4">4</Select.Option>
                 </Select>
               </Col>
-              <Col lg={4}>{`第 ${game.gameID} 场`}</Col>
-              <Col lg={4}>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>{`第 ${game.gameID} 场`}</Col>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                 <Select name="score2">
                   <Select.Option value="0">0</Select.Option>
                   <Select.Option value="1">1</Select.Option>
@@ -100,17 +107,18 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
                   <Select.Option value="4">4</Select.Option>
                 </Select>
               </Col>
-              <Col lg={4}>
+              <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                 <ImageAvatar name={game.player2} hasButton={false} />
               </Col>
             </Row>
             <Row>
-              <Col lg={8}>
+              <Col xs={6} sm={6} md={6} lg={6} xl={6}></Col>
+              <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                 <SubmitButton disabled={this.state.submitState} type="primary">
                   Submit
                 </SubmitButton>
               </Col>
-              <Col lg={8}>
+              <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                 <ResetButton disabled={!this.state.submitState} type="danger">
                   Reset
                 </ResetButton>
@@ -118,7 +126,7 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
             </Row>
           </Form>
         </Formik>
-      </div>
+      </ContainerDiv>
     );
   }
 }

@@ -32,8 +32,8 @@ class playersByGroup extends React.Component<RootProps> {
     return (
       <>
         <Row>
-          <Col xs={24} sm={24} md={24} lg={18} xl={16}>
-            <h4>{this.props.group} GROUP</h4>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <h2 style={{fontSize:'4vh', color:'#f0f'}}>{this.props.group} GROUP</h2>
             <div
               className="players-avatar"
               style={{ display: 'flex', justifyItems: 'space-between', marginRight: '2vh', flexWrap: 'wrap' }}

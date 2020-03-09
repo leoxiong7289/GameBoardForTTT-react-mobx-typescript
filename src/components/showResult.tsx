@@ -1,28 +1,42 @@
 import * as React from 'react';
 import ImageAvatar from './avatar';
+import styled from 'styled-components';
+import { Table } from 'antd';
 
+const ContainerDiv = styled.div`
+  margin: 0 auto;
+  width:600px;
+  background-color: #aaa;
+`
 interface player {
   name: string;
   score: number;
   rank: number;
 }
 
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (name:any) => <ImageAvatar name={name} hasButton={false} />
+  },
+  {
+    title: 'Score',
+    dataIndex: 'score',
+    key: 'score',
+  },
+  {
+    title: 'Rank',
+    dataIndex: 'rank',
+    key: 'rank',
+  },
+]
+
 export default (props: any) => {
   return (
-    <table>
-      <tbody>
-        {props.playersList.map((player: player, index: number) => {
-          return (
-            <tr key={index} style={{ border: '1px solid #000' }}>
-              <td style={{ border: '1px solid #000' }}>
-                <ImageAvatar name={player.name} hasButton={false} buttonName='' buttonFunction='' />
-              </td>
-              <td style={{ border: '1px solid #000' }}>{player.score}</td>
-              <td style={{ border: '1px solid #000' }}>{`第${player.rank}名`}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <ContainerDiv>
+      <Table dataSource={props.playersList}  columns={columns} size='large' />
+    </ContainerDiv>
   );
 };
