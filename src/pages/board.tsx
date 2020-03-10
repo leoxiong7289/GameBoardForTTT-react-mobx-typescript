@@ -24,19 +24,13 @@ interface RootProps {
 @inject('playersStore', 'gamesStore', 'competitionStore')
 @observer
 export default class CompetitionBoard extends React.Component<RootProps> {
-  // constructor(props: any) {
-  //   super(props);
-  // }
-
-  // componentWillMount() {
-  //   document.title = this.props.competitionStore.competition.name
-  // }
 
   componentDidMount() {
     const { players } = this.props.playersStore;
     const { competition } = this.props.competitionStore;
     const { gameBoards } = this.props.gamesStore;
     const { storeGameBoardsInStore } = this.props.gamesStore;
+    // ensure gameBoards is correct, especially jumping between players page and board page
     if (gameBoards.length === 0 || gameBoards.length < (players.length*(players.length-1))/2) {
       let newGameBoards = GenarateGameBoards(players, competition);
       storeGameBoardsInStore(newGameBoards);
@@ -45,7 +39,6 @@ export default class CompetitionBoard extends React.Component<RootProps> {
 
   render() {
     const { gameBoards } = this.props.gamesStore;
-    // console.log(gameBoards)
     return (
       <div>
         <div className="header-div">

@@ -37,6 +37,8 @@ const PlayerAvatarCard = styled.div`
   }
 `;
 
+// Due to this avatar component will be used in many field, so define these props to control.
+// the first two props are compulsory
 interface RootProps {
   name: string;
   hasButton: boolean;
@@ -46,24 +48,14 @@ interface RootProps {
   buttonFunction?: any;
 }
 
-// interface RootState {
-//   isAddButtonDisabled?: boolean,
-// }
 @observer
 export default class ImageAvatars extends React.Component<RootProps> {
-  // constructor(props:RootProps) {
-  //   super(props)
-    // this.state={
-    //   isAddButtonDisabled: this.props.isButtonDisabled
-    // }
-  // }
 
   render(){
   return (
     <div>
       <PlayerAvatarCard>
         <Avatar className="avatar" alt={this.props.name} src={`/static/images/avatar/${this.props.name}.jpg`} size={64} />
-        {/* <Avatar size='small' src={`https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`} /> */}
         <span className="avatar-name">{this.props.name}</span>
       {this.props.hasButton && (
         <Button

@@ -24,14 +24,9 @@ interface Errors {
 @inject('competitionStore')
 @observer
 class Index extends React.Component<RootProps> {
-  // constructor(props: any) {
-  //   super(props);
-  //   console.log(this.props);
-  // }
 
   componentWillMount() {
     document.title = 'Welcome to Tornado Tennis Club';
-    // history.go(0)
   }
 
   render() {
@@ -53,17 +48,15 @@ class Index extends React.Component<RootProps> {
                     return errors;
                   }}
                   onSubmit={(value, action) => {
-                    // const { competition } = this.props.competitionStore;
                     const { storeCompetitionInStore } = this.props.competitionStore;
                     let tempCompetition = {
                       name: value.name,
                       style: value.style
                     };
                     storeCompetitionInStore(tempCompetition);
-                    // console.log(storeCompetitionInStore)
                     setTimeout(() => {
+                      // reset the button state and alert a message for user after 0.5 second
                       action.setSubmitting(false);
-                      // console.log(value.name)
                       alert(`Competition ${value.name} has created successfully!`);
                     }, 500);
                   }}

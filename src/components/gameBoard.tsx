@@ -6,20 +6,10 @@ import styled from 'styled-components';
 import { Form, Select, SubmitButton, ResetButton } from 'formik-antd';
 import { Formik } from 'formik';
 
-
 const ContainerDiv = styled.div`
   margin: 0 auto;
   width: 700px;
 `
-
-
-interface game {
-  gameID: number;
-  player1: string;
-  score1: number;
-  player2: string;
-  score2: number;
-}
 
 interface RootProps {
   game?: any;
@@ -29,6 +19,8 @@ interface RootProps {
 interface RootState {
   submitState?: boolean;
 }
+
+// This component is a single gameboard of all the game in a competition
 @inject('gamesStore', 'playersStore')
 @observer
 export default class GameBoard extends React.Component<RootProps, RootState> {
@@ -37,27 +29,12 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
     this.state = {
       submitState: false
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-  }
-
-  handleSubmit() {
-    this.setState({ submitState: !this.state.submitState });
-    // const { gameBoards } = this.props.gamesStore;
-    // const game = gameBoards[0];
-  }
-
-  handleReset() {
-    this.setState({ submitState: !this.state.submitState });
-    // const { gameBoards } = this.props.gamesStore;
-    // const game = gameBoards;
   }
 
   render() {
     const { game } = this.props;
     const { handleSubmitScore } = this.props.gamesStore;
     const { handleResetScore } = this.props.gamesStore;
-    // console.log(game.player1)
     return (
       <ContainerDiv className="board-card">
         <hr/>
@@ -71,7 +48,6 @@ export default class GameBoard extends React.Component<RootProps, RootState> {
               score2: value.score2,
               player2: game.player2
             };
-            // console.log(gameScore)
             handleSubmitScore(gameScore);
             this.setState({ submitState: !this.state.submitState });
             setTimeout(() => {

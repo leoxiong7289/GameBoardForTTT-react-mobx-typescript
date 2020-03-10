@@ -33,7 +33,6 @@ interface RootState {
 class Players extends React.Component<RootProps, RootState> {
   constructor(props: any) {
     super(props);
-    // console.log(this.props)
     this.state = {
       groups: [],
       displayedGroup: [],
@@ -44,6 +43,10 @@ class Players extends React.Component<RootProps, RootState> {
     this.filterPlayersByGroup = this.filterPlayersByGroup.bind(this)
   }
 
+  // get players data from contentful website
+  // store allPlayers in state
+  // set all the ADD button to enable by create a initialIsAddButtonDisabledGroup in state
+  // store these initialIsAddButtonDisabledGroup into store
   componentDidMount() {
     axios
       .get(
@@ -54,17 +57,14 @@ class Players extends React.Component<RootProps, RootState> {
           name: item.fields.playerName,
           group: item.fields.group
         }));
-        // console.log(allPlayers);
         let groups = Array.from(new Set(allPlayers.map((item: any) => item.group))).sort();
         let initialIsAddButtonDisabledGroup = allPlayers.map((item:any)=>{return {'name':item.name,'isButtonDisabled':false}})
-        // console.log(isAddButtonDisabledGroup);
         this.setState({ allPlayers, groups, initialIsAddButtonDisabledGroup });
         const { createAllPlayersCardAddButtonStatus } = this.props.playersStore
         const { avatarAddButtonStatusGroup } = this.props.playersStore
         if (avatarAddButtonStatusGroup.length==0) {
         createAllPlayersCardAddButtonStatus(this.state.initialIsAddButtonDisabledGroup)
         }
-        // console.log(avatarAddButtonStatusGroup)
         document.title = this.props.competitionStore.competition.name
       });
   }

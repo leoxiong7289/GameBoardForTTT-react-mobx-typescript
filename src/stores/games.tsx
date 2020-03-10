@@ -34,7 +34,6 @@ class GamesClass {
   @action.bound
   resetGamesStore() {
     this.gameBoards = []
-    // console.log(this.gameBoards)
   }
 } 
 

@@ -8,6 +8,8 @@ interface RootProps {
   playersList: any;
 }
 
+// This component is to display a selected players list
+// including the avatar element and a DELETE button
 @inject('playersStore')
 @observer
 class playersList extends React.Component<RootProps> {

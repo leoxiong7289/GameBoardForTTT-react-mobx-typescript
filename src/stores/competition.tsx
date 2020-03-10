@@ -15,7 +15,6 @@ class CompetitionClass {
   @action.bound
   resetCompetitionStore() {
     this.competition.name = ''
-    // console.log(this.competition)
   }
 }
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
 import ImageAvatars from './avatar';
-// import playersList from './playersList';
 import { observer, inject } from 'mobx-react';
 
 interface player {
@@ -13,27 +12,21 @@ interface RootProps {
   group?: any;
   playersList?: any;
   playersStore?: any;
-  // uiStore?: any,
 }
 
+// This component is to display a group players list, including the avatar element and a ADD button
 @inject('playersStore')
 @observer
 class playersByGroup extends React.Component<RootProps> {
-  // constructor(props: RootProps) {
-  //   super(props);
-  //   // console.log(this.props.playersStore)
-  // }
   render() {
-    // const { players } = this.props.playersStore;
     const { addPlayer } = this.props.playersStore;
+    // this avatarAddButtonStatusGroup is a array,  and is used to control very ADD button state
     const { avatarAddButtonStatusGroup } = this.props.playersStore;
-    // console.log(avatarAddButtonStatusGroup.filter((item:any)=>item.name=='Jim Wang')[0]['isButtonDisabled'])
-    // console.log("render: ",addPlayer)
     return (
       <>
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <h2 style={{fontSize:'4vh', color:'#f0f'}}>{this.props.group} GROUP</h2>
+            <h2 style={{ fontSize: '4vh', color: '#f0f' }}>{this.props.group} GROUP</h2>
             <div
               className="players-avatar"
               style={{ display: 'flex', justifyItems: 'space-between', marginRight: '2vh', flexWrap: 'wrap' }}

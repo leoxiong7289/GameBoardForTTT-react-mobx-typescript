@@ -8,12 +8,7 @@ const ContainerDiv = styled.div`
   width:600px;
   background-color: #aaa;
 `
-interface player {
-  name: string;
-  score: number;
-  rank: number;
-}
-
+// define a table head for the Table component
 const columns = [
   {
     title: 'Name',

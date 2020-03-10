@@ -12,29 +12,23 @@ const ContainerDiv = styled.div`
   margin: 0 auto;
   width: 80%;
   background-color: #ccc;
-`
+`;
 interface RootProps {
   playersStore: any;
   gamesStore: any;
-  competitionStore?:any
+  competitionStore?: any;
 }
 
-@inject('playersStore', 'gamesStore','competitionStore')
+@inject('playersStore', 'gamesStore', 'competitionStore')
 @observer
 export default class Result extends React.Component<RootProps> {
-  // constructor(props: RootProps) {
-  //   super(props);
-  // }
-  // componentWillMount() {
-  //   document.title = this.props.competitionStore.competition.name
-  // }
 
+  //clear all the stores value when jumping to index page
   componentWillUnmount() {
-    document.title = 'Tornado Tennis: Please start a new game'
-    this.props.competitionStore.resetCompetitionStore()
-    this.props.gamesStore.resetGamesStore()
-    this.props.playersStore.resetPlayersStore()
-    // console.log(this.props.gamesStore.resetGamesStore)
+    document.title = 'Tornado Tennis: Please start a new game';
+    this.props.competitionStore.resetCompetitionStore();
+    this.props.gamesStore.resetGamesStore();
+    this.props.playersStore.resetPlayersStore();
   }
 
   render() {
@@ -56,46 +50,42 @@ export default class Result extends React.Component<RootProps> {
         score2: item.score2
       };
     });
-    // console.log(playersList, gamesResult)
+
+    // calculate the competition result from the gameBoards store
     for (let i = 0; i < playersList.length; i++) {
       let player1ScoresArray = gamesResult.map((item: any) => {
         return item.player1 === playersList[i].name ? item.score1 : 0;
       });
-      console.log(player1ScoresArray)
+      console.log(player1ScoresArray);
       let player2ScoresArray = gamesResult.map((item: any) => {
         return item.player2 === playersList[i].name ? item.score2 : 0;
       });
-      console.log(player2ScoresArray)
+      console.log(player2ScoresArray);
       playersList[i].score = player1ScoresArray
         .concat(player2ScoresArray)
-        .reduce((acc: any, cur: any) => Number(acc) + Number(cur),0);
-      console.log(playersList)
+        .reduce((acc: any, cur: any) => Number(acc) + Number(cur), 0);
+      console.log(playersList);
     }
     playersList.sort((a: any, b: any) => b.score - a.score);
     console.log(playersList);
 
-    playersList.map((item:any,index:any)=>item.rank=index+1)
-    console.log(playersList)
-    
-    
-    //  TODO: if two players have the same score, the rank depended on the game between the two, winner is the higher one
-    // for (let i = 0; i < playersList.length-1; i++) {
-    //   if ((playersList[i].score = playersList[i + 1].score)) {
+    playersList.map((item: any, index: any) => (item.rank = index + 1));
+    console.log(playersList);
 
-    //   }
-    // }
-    console.log(playersList)
+    // TODO: if two players have the same score, the rank depended on the game between the two, winner is the higher one
+
+    console.log(playersList);
     return (
       <div>
         <div className="header-div">
           <Header />
         </div>
         <ContainerDiv>
-        <h2>Competition Result</h2>
-        <ShowResult playersList={playersList} />
-        <Link to="/index/">
-          <Button type="danger">Restart New Competition</Button>
-        </Link>
+          <h2>Competition Result</h2>
+          <ShowResult playersList={playersList} />
+          <Link to="/index/">
+            <Button type="danger">Restart New Competition</Button>
+          </Link>
         </ContainerDiv>
         <div className="footer-div">
           <Footer />

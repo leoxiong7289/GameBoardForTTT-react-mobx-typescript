@@ -45,7 +45,6 @@ class PlayersClass {
   resetPlayersStore() {
     this.players = []
     this.avatarAddButtonStatusGroup = []
-    // console.log(this.players)
   }
 }
 
